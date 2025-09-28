@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Daily Attendance</title>
+</head>
+<body>
+  <h2>Daily Attendance</h2>
+  
+  <label>Employee ID:</label>
+  <input type="text" id="employeeId" placeholder="Enter ID"><br><br>
+  
+  <button onclick="checkIn()">Check In</button>
+  <button onclick="checkOut()">Check Out</button>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycby460Mc8OTdf_bhYocz7GRlOVxs3Pt9O4x7AlduquPuWuTOzQEl3Ay78FJSRZAfbZ0o/exec";
+
+    async function sendData(action) {
+      const id = document.getElementById('employeeId').value;
+      if (!id) return alert("Please enter Employee ID");
+
+      const data = {
+        employeeId: id,
+        action: action,
+        status: "Late" // চাইলে Status ফিল্ড কাস্টম করতে পারো
+      };
+
+      const response = await fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" }
+      });
+
+      alert("Attendance " + action + " submitted!");
+    }
+
+    function checkIn() {
+      sendData("Check-in");
+    }
+
+    function checkOut() {
+      sendData("Check-out");
+    }
+  </script>
+</body>
+</html>
